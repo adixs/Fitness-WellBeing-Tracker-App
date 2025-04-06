@@ -41,13 +41,13 @@ const FitScreen = () => {
       { }
       <Image style={styles.image} source={{ uri: current?.image }} />
 
-      {/* Exercise Title and Sets */}
+      {}
       <Text style={[styles.title, { color: darkMode ? "#f5f5f5" : "#333" }]}>
         {current?.name} <Octicons name="question" size={22} color={darkMode ? "#f5f5f5" : "#6d6868"} />
       </Text>
       <Text style={[styles.sets, { color: darkMode ? "#4caf50" : "#198f51" }]}>x{current?.sets}</Text>
 
-      {/* Progress Indicator */}
+      {}
       <View style={styles.progressSection}>
         <Text style={[styles.progressText, { color: darkMode ? "#f5f5f5" : "#666" }]}>
           Exercise {index + 1} of {exercise.length}
@@ -58,7 +58,7 @@ const FitScreen = () => {
         </Text>
       </View>
 
-      {/* Done Button */}
+      {}
       <TouchableOpacity
         onPress={() => {
           navigation.navigate(index + 1 >= exercise.length ? 'Home' : 'Rest');
@@ -74,7 +74,7 @@ const FitScreen = () => {
         </Text>
       </TouchableOpacity>
 
-      {/* Navigation Buttons */}
+      {}
       <View style={styles.navigationButtons}>
         <TouchableOpacity
           disabled={index === 0}

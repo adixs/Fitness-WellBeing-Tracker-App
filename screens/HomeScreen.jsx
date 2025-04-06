@@ -4,10 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { ProgressBar } from 'react-native-paper';
 import FitnessCards from '../components/FitnessCards';
 import { FitnessItems } from '../Context';
+import { useNavigation } from '@react-navigation/native'; // ✅ Added for navigation
 
 const HomeScreen = () => {
   const [darkMode, setDarkMode] = useState(true);
   const { calories, minutes, workout } = useContext(FitnessItems);
+  const navigation = useNavigation(); // ✅ Init navigation
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -23,14 +25,26 @@ const HomeScreen = () => {
       <View style={styles.header(darkMode)}>
         <View style={styles.headerRow}>
           <Text style={styles.headerText(darkMode)}>{getGreeting()}</Text>
-          <TouchableOpacity onPress={() => setDarkMode(!darkMode)} style={styles.toggleButton(darkMode)}>
-            {darkMode ? (
-              <Ionicons name="sunny" size={20} color="white" />
-            ) : (
-              <Ionicons name="moon" size={20} color="black" />
-            )}
-          </TouchableOpacity>
+
+          
+          <View style={{ flexDirection: 'row', gap: 10 }}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('UserProfile')}
+              style={styles.toggleButton(darkMode)}
+            >
+              <Ionicons name="person-circle-outline" size={22} color={darkMode ? 'white' : 'black'} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => setDarkMode(!darkMode)} style={styles.toggleButton(darkMode)}>
+              {darkMode ? (
+                <Ionicons name="sunny" size={10} color="white" />
+              ) : (
+                <Ionicons name="moon" size={10} color="black" />
+              )}
+            </TouchableOpacity>
+          </View>
         </View>
+
         <Text style={styles.subHeaderText(darkMode)}>SIX PACK IN 30 DAYS</Text>
       </View>
 
