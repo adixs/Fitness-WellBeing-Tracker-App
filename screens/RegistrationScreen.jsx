@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { auth, db } from '../config/firebase';  // Import Firebase auth and db
+import { createUserWithEmailAndPassword } from 'firebase/auth'; // Firebase Auth
+import { addDoc, collection } from 'firebase/firestore'; // Firestore
 import StyledTextInput from '../components/Inputs/StyledTextInput';
 import RegularButton from '../components/Buttons/RegularButton';
 
@@ -7,14 +10,29 @@ const RegistrationScreen = ({ navigation }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const usersdata = collection(db, "users")
 
-  const submitData = () => {
+  const submitData = async () => {
     if (!fullName.trim() || !email.trim() || !password.trim()) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
-    Alert.alert('Success', 'Account created successfully!');
-    navigation.navigate('Login');
+   const ramndom =  Math.floor((1 + Math.random()) * 0x10000000000000)
+        .toString(16)
+        .substring(1);
+    try {
+      let a =  await addDoc(usersdata,{
+        Id:ramndom,
+        Email:email,
+        Password:password,
+        Name:fullName
+      })
+      console.log(a)
+      Alert.alert('Success', 'Account created successfully!');
+      navigation.navigate('Login');
+    } catch (error) {
+      Alert.alert('Error', error.message);
+    }
   };
 
   return (

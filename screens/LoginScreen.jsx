@@ -1,33 +1,46 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../config/firebase'; // Adjust path if needed
 import StyledTextInput from '../components/Inputs/StyledTextInput';
 import RegularButton from '../components/Buttons/RegularButton';
+
+
+
+
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const submitData = () => {
+  const submitData = async () => {
     if (!email.trim() || !password.trim()) {
       Alert.alert('Error', 'Please enter all fields');
       return;
     }
-    if (email === 'Adi' && password === '123') {
-      navigation.navigate('Home');
-    } else {
-      Alert.alert('Error', 'Invalid email or password');
+
+    try {
+      const usersRef = collection(db, 'users');
+      const q = query(usersRef, where('Email', '==', email), where('Password', '==', password));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+        navigation.navigate('Home', { userId: querySnapshot.docs[0].id, userData });
+      } else {
+        Alert.alert('Error', 'Invalid email or password');
+      }
+    } catch (error) {
+      Alert.alert('Error', error.message);
     }
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container} 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
         <Text style={styles.title}>Welcome!</Text>
         <Text style={styles.subtitle}>Login to your account</Text>
-        
+
         <StyledTextInput
           label="Email Address"
           icon="email"
@@ -46,7 +59,7 @@ const LoginScreen = ({ navigation }) => {
           isPassword={true}
           darkMode={true}
         />
-        
+
         <RegularButton onPress={submitData} darkMode={true} style={styles.button}>
           Login
         </RegularButton>

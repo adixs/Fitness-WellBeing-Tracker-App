@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { db } from '../config/firebase'; // Adjust path if needed
+import { doc, setDoc,deleteDoc } from 'firebase/firestore';
 
-const UserProfile = () => {
+const UserProfile = ({navigation}) => {
   const [darkMode, setDarkMode] = useState(true);
   const [user, setUser] = useState({
     name: 'John Doe',
@@ -14,31 +16,51 @@ const UserProfile = () => {
   });
   const [editing, setEditing] = useState(false);
 
-  // Handle updating profile information
-  const handleUpdate = () => {
-    Alert.alert('Profile Updated', 'Your profile has been successfully updated.');
-    setEditing(false);
+  const handleUpdate = async () => {
+    try {
+      const userRef = doc(db, 'users', user.email);
+      await setDoc(userRef, user); // Save entire user object
+      Alert.alert('Profile Updated', 'Your profile has been successfully updated.');
+      setEditing(false);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      Alert.alert('Error', 'Failed to update profile.');
+    }
   };
 
-  // Handle deleting profile
+
+
   const handleDelete = () => {
     Alert.alert(
       'Delete Profile',
       'Are you sure you want to delete your profile?',
       [
         { text: 'Cancel', style: 'cancel' },
-        { text: 'Delete', onPress: () => setUser(null), style: 'destructive' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const userRef = doc(db, 'users', user.email);
+              await deleteDoc(userRef); // Delete from Firestore
+              setUser(null); // Clear local state
+              Alert.alert('Deleted', 'Your profile has been deleted.');
+            } catch (error) {
+              console.error('Error deleting profile:', error);
+              Alert.alert('Error', 'Failed to delete profile.');
+            }
+          },
+        },
       ]
     );
   };
+  
 
-  // Handle logging out
   const handleLogout = () => {
     Alert.alert('Logged Out', 'You have been logged out.');
-    // Add your navigation logic here (e.g., navigate to Login screen)
+    navigation.navigate('Login');
   };
 
-  // Handle picking a profile picture
   const handlePickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -52,7 +74,6 @@ const UserProfile = () => {
     }
   };
 
-  // Handle resetting the profile data to default values
   const handleReset = () => {
     setUser({
       name: 'John Doe',
@@ -74,7 +95,6 @@ const UserProfile = () => {
 
   return (
     <View style={styles.container(darkMode)}>
-      {/* Header */}
       <View style={styles.header(darkMode)}>
         <Text style={styles.headerText(darkMode)}>User Profile</Text>
         <TouchableOpacity onPress={() => setDarkMode(!darkMode)} style={styles.toggleButton(darkMode)}>
@@ -82,7 +102,6 @@ const UserProfile = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Profile Picture */}
       <TouchableOpacity onPress={handlePickImage} style={styles.profilePictureContainer}>
         {user.profilePicture ? (
           <Image source={{ uri: user.profilePicture }} style={styles.profilePicture} />
@@ -92,7 +111,6 @@ const UserProfile = () => {
       </TouchableOpacity>
       <Text style={styles.uploadText}>Tap to change profile picture</Text>
 
-      {/* Profile Details */}
       <View style={styles.profileSection}>
         <Text style={styles.label(darkMode)}>Name</Text>
         <TextInput style={styles.input(darkMode)} value={user.name} onChangeText={(text) => setUser({ ...user, name: text })} editable={editing} />
@@ -107,7 +125,6 @@ const UserProfile = () => {
         <TextInput style={styles.input(darkMode)} value={user.address} onChangeText={(text) => setUser({ ...user, address: text })} editable={editing} />
       </View>
 
-      {/* Buttons */}
       <View style={styles.buttonRow}>
         {editing ? (
           <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
@@ -135,7 +152,6 @@ const UserProfile = () => {
   );
 };
 
-// Styles
 const styles = StyleSheet.create({
   container: (darkMode) => ({
     flex: 1,
@@ -193,6 +209,7 @@ const styles = StyleSheet.create({
   buttonRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 10,
   },
   editButton: {
     backgroundColor: '#4caf50',
@@ -236,6 +253,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
+  deletedText: (darkMode) => ({
+    color: darkMode ? 'white' : 'black',
+    fontSize: 20,
+    textAlign: 'center',
+    marginTop: 100,
+  }),
 });
 
 export default UserProfile;
