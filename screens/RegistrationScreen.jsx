@@ -17,12 +17,9 @@ const RegistrationScreen = ({ navigation }) => {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
-   const ramndom =  Math.floor((1 + Math.random()) * 0x10000000000000)
-        .toString(16)
-        .substring(1);
+
     try {
       let a =  await addDoc(usersdata,{
-        Id:ramndom,
         Email:email,
         Password:password,
         Name:fullName
