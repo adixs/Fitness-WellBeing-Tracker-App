@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "fitness-app-586a8",
+    "staging": "fitness-app-586a8",
+    "update": "fitness-app-586a8"
+  },
+  "targets": {},
+  "etags": {}
+}
