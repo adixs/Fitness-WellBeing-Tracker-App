@@ -2,12 +2,18 @@
   "name": "react-native-fitness-app",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
+  "private": true,
+
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "test": "echo \"No tests yet. Placeholder for CI/CD\" && exit 0",
+    "lint": "echo \"No ESLint configured yet. Add ESLint rules here.\" && exit 0",
+    "build": "echo \"Expo builds are handled by EAS or manually. No local build needed.\" && exit 0"
   },
+
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -42,11 +48,11 @@
     "react-native-web": "~0.19.13",
     "styled-components": "^6.1.14"
   },
+
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.3.12",
     "@types/styled-components": "^5.1.34",
     "typescript": "^5.7.3"
-  },
-  "private": true
+  }
 }

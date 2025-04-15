@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
-import { collection, query, where, getDocs } from 'firebase/firestore';
-import { db } from '../config/firebase'; // Adjust path if needed
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../config/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 import StyledTextInput from '../components/Inputs/StyledTextInput';
 import RegularButton from '../components/Buttons/RegularButton';
-
-
-
-
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -20,23 +17,35 @@ const LoginScreen = ({ navigation }) => {
     }
 
     try {
-      const usersRef = collection(db, 'users');
-      const q = query(usersRef, where('Email', '==', email), where('Password', '==', password));
-      const querySnapshot = await getDocs(q);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-      if (!querySnapshot.empty) {
-        const userData = querySnapshot.docs[0].data();
-        navigation.navigate('Home', { userId: querySnapshot.docs[0].id, userData });
-      } else {
-        Alert.alert('Error', 'Invalid email or password');
+      try {
+        const docRef = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          navigation.navigate('Home', { userId: user.uid, userData });
+        } else {
+          navigation.navigate('Home', { userId: user.uid });
+        }
+      } catch (firestoreError) {
+        console.error('Firestore error:', firestoreError.message);
+        Alert.alert('Error', 'Could not fetch user profile.');
       }
-    } catch (error) {
-      Alert.alert('Error', error.message);
+
+    } catch (authError) {
+      console.error('Login error:', authError.message);
+      Alert.alert('Login Failed', authError.message);
     }
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
       <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
         <Text style={styles.title}>Welcome!</Text>
         <Text style={styles.subtitle}>Login to your account</Text>

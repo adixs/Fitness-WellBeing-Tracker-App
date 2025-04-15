@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
-import { auth, db } from '../config/firebase';  // Import Firebase auth and db
+import { auth, db } from '../config/firebase';  // Firebase config
 import { createUserWithEmailAndPassword } from 'firebase/auth'; // Firebase Auth
 import { addDoc, collection } from 'firebase/firestore'; // Firestore
 import StyledTextInput from '../components/Inputs/StyledTextInput';
@@ -10,7 +10,7 @@ const RegistrationScreen = ({ navigation }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const usersdata = collection(db, "users")
+  const usersCollection = collection(db, "users");
 
   const submitData = async () => {
     if (!fullName.trim() || !email.trim() || !password.trim()) {
@@ -19,12 +19,18 @@ const RegistrationScreen = ({ navigation }) => {
     }
 
     try {
-      let a =  await addDoc(usersdata,{
-        Email:email,
-        Password:password,
-        Name:fullName
-      })
-      console.log(a)
+      // Create user with Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Add user details to Firestore (DO NOT add password!)
+      await addDoc(usersCollection, {
+        uid: user.uid,
+        Name: fullName,
+        Email: email,
+        createdAt: new Date()
+      });
+
       Alert.alert('Success', 'Account created successfully!');
       navigation.navigate('Login');
     } catch (error) {
