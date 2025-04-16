@@ -2,14 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-<<<<<<< HEAD
 import { db } from '../config/firebase';
 import { doc, setDoc, deleteDoc } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
-=======
-import { db } from '../config/firebase'; 
-import { doc, setDoc,deleteDoc } from 'firebase/firestore';
->>>>>>> d71e0811ccdfa346d4e4fe9f5b08354777ca0fe1
 
 const UserProfile = () => {
   const [darkMode, setDarkMode] = useState(true);
@@ -23,6 +18,7 @@ const UserProfile = () => {
   const [editing, setEditing] = useState(false);
 
   const navigation = useNavigation();
+
   const handleUpdate = async () => {
     try {
       const userRef = doc(db, 'users', user.email);
@@ -47,13 +43,8 @@ const UserProfile = () => {
           onPress: async () => {
             try {
               const userRef = doc(db, 'users', user.email);
-<<<<<<< HEAD
               await deleteDoc(userRef);
               setUser(null);
-=======
-              await deleteDoc(userRef); 
-              setUser(null); 
->>>>>>> d71e0811ccdfa346d4e4fe9f5b08354777ca0fe1
               Alert.alert('Deleted', 'Your profile has been deleted.');
             } catch (error) {
               console.error('Error deleting profile:', error);
