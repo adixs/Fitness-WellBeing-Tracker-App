@@ -2,24 +2,26 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { db } from '../config/firebase'; // Adjust path if needed
-import { doc, setDoc,deleteDoc } from 'firebase/firestore';
+import { db } from '../config/firebase';
+import { doc, setDoc, deleteDoc } from 'firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 
-const UserProfile = ({navigation}) => {
+const UserProfile = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [user, setUser] = useState({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
+    name: 'Adithya Abeysekara',
+    email: 'Adithya@gmail.com',
     phone: '+1234567890',
     address: '123 Main Street, City, Country',
     profilePicture: null,
   });
   const [editing, setEditing] = useState(false);
 
+  const navigation = useNavigation();
   const handleUpdate = async () => {
     try {
       const userRef = doc(db, 'users', user.email);
-      await setDoc(userRef, user); // Save entire user object
+      await setDoc(userRef, user);
       Alert.alert('Profile Updated', 'Your profile has been successfully updated.');
       setEditing(false);
     } catch (error) {
@@ -27,8 +29,6 @@ const UserProfile = ({navigation}) => {
       Alert.alert('Error', 'Failed to update profile.');
     }
   };
-
-
 
   const handleDelete = () => {
     Alert.alert(
@@ -42,8 +42,8 @@ const UserProfile = ({navigation}) => {
           onPress: async () => {
             try {
               const userRef = doc(db, 'users', user.email);
-              await deleteDoc(userRef); // Delete from Firestore
-              setUser(null); // Clear local state
+              await deleteDoc(userRef);
+              setUser(null);
               Alert.alert('Deleted', 'Your profile has been deleted.');
             } catch (error) {
               console.error('Error deleting profile:', error);
@@ -54,7 +54,6 @@ const UserProfile = ({navigation}) => {
       ]
     );
   };
-  
 
   const handleLogout = () => {
     Alert.alert('Logged Out', 'You have been logged out.');
@@ -76,8 +75,8 @@ const UserProfile = ({navigation}) => {
 
   const handleReset = () => {
     setUser({
-      name: 'John Doe',
-      email: 'john.doe@example.com',
+      name: 'Adithya Abeysekara',
+      email: 'Adithya@gmail.com',
       phone: '+1234567890',
       address: '123 Main Street, City, Country',
       profilePicture: null,
@@ -96,6 +95,9 @@ const UserProfile = ({navigation}) => {
   return (
     <View style={styles.container(darkMode)}>
       <View style={styles.header(darkMode)}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color={darkMode ? 'white' : 'black'} />
+        </TouchableOpacity>
         <Text style={styles.headerText(darkMode)}>User Profile</Text>
         <TouchableOpacity onPress={() => setDarkMode(!darkMode)} style={styles.toggleButton(darkMode)}>
           {darkMode ? <Ionicons name="sunny" size={22} color="white" /> : <Ionicons name="moon" size={22} color="black" />}
@@ -157,12 +159,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: darkMode ? '#121212' : '#f5f5f5',
     padding: 20,
+    marginTop: 30,
   }),
   header: (darkMode) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 50,
   }),
   headerText: (darkMode) => ({
     fontSize: 24,
@@ -174,6 +177,11 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: darkMode ? '#444' : '#ddd',
   }),
+  backButton: {
+    padding: 10,
+    borderRadius: 50,
+    marginRight: 10,
+  },
   profilePictureContainer: {
     alignSelf: 'center',
     marginBottom: 10,

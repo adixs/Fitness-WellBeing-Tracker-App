@@ -13,7 +13,7 @@ const InputWrapper = styled.View`
 
 const LeftIcon = styled.View`
   position: absolute;
-  top: 40px;
+  top: 34px;
   left: 15px;
   z-index: 1;
   padding-right: 5px;
@@ -35,7 +35,7 @@ const InputField = styled.TextInput`
 
 const RightIcon = styled.TouchableOpacity`
   position: absolute;
-  top: 40px;
+  top: 34px;
   right: 15px;
   z-index: 1;
 `

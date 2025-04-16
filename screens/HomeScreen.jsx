@@ -4,12 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { ProgressBar } from 'react-native-paper';
 import FitnessCards from '../components/FitnessCards';
 import { FitnessItems } from '../Context';
-import { useNavigation } from '@react-navigation/native'; // ✅ Added for navigation
+import { useNavigation } from '@react-navigation/native'; 
 
 const HomeScreen = () => {
   const [darkMode, setDarkMode] = useState(true);
   const { calories, minutes, workout } = useContext(FitnessItems);
-  const navigation = useNavigation(); // ✅ Init navigation
+  const navigation = useNavigation(); 
 
   const getGreeting = () => {
     const hour = new Date().getHours();

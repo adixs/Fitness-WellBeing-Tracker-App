@@ -6,7 +6,7 @@ import FitScreen from './screens/FitScreen';
 import RestScreen from './screens/RestScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegistrationScreen from './screens/RegistrationScreen';
-import UserProfile from './screens/UserProfile'; // ✅ Import UserProfile here
+import UserProfile from './screens/UserProfile'; 
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
