@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
-import { auth, db } from '../config/firebase';  // Firebase config
-import { createUserWithEmailAndPassword } from 'firebase/auth'; // Firebase Auth
-import { addDoc, collection } from 'firebase/firestore'; // Firestore
+import { auth, db } from '../config/firebase';  
+import { createUserWithEmailAndPassword } from 'firebase/auth'; 
+import { addDoc, collection } from 'firebase/firestore'; 
 import StyledTextInput from '../components/Inputs/StyledTextInput';
 import RegularButton from '../components/Buttons/RegularButton';
 
