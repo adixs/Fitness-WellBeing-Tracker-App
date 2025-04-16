@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { db } from '../config/firebase'; // Adjust path if needed
+import { db } from '../config/firebase'; 
 import { doc, setDoc,deleteDoc } from 'firebase/firestore';
 
 const UserProfile = ({navigation}) => {
@@ -42,8 +42,8 @@ const UserProfile = ({navigation}) => {
           onPress: async () => {
             try {
               const userRef = doc(db, 'users', user.email);
-              await deleteDoc(userRef); // Delete from Firestore
-              setUser(null); // Clear local state
+              await deleteDoc(userRef); 
+              setUser(null); 
               Alert.alert('Deleted', 'Your profile has been deleted.');
             } catch (error) {
               console.error('Error deleting profile:', error);
