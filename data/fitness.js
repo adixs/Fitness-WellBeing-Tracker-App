@@ -2,7 +2,7 @@ const fitnessData = [
   {
     id: "0",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrEM-6gDUO7g1cdrNhBaqk_0nwxy6ILlIqsQ&usqp=CAU",
+      "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2017/07/1109-big-muscular-incline-cable-flye.jpg?quality=86&strip=all",
     name: "Full Body",
     description: "7x4 Challenge",
     exercises: [
@@ -46,7 +46,7 @@ const fitnessData = [
   {
     id: "1",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRonpSjpGQ2-JD8-XFFD7LYsVSFCOiASj0wSOq1qxNvxGFHe7W6AU1LRAeJ2fOIzYICMGc&usqp=CAU",
+      "https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2018/08/woman-female-abs-1109.jpg?quality=86&strip=all",
     name: "Abs Beginner",
     description: "7x4 Challenge",
     exercises: [
@@ -90,7 +90,7 @@ const fitnessData = [
   {
     id: "2",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1NHvoutGn-Vr_uwVbOOtezhENvx9jhV6pfQ&usqp=CAU",
+      "https://www.dmoose.com/cdn/shop/articles/feature-image_87a28752-6da3-4be8-8814-d5221236136d.jpg?v=1676644951",
     name: "Arm Beginner",
     description: "7x4 Challenge",
     exercises: [
@@ -147,7 +147,7 @@ const fitnessData = [
   {
     id: "3",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqCT0tewpNAZ6R9JUoMDHIHGnpE44U2Fl1Zw&usqp=CAU",
+      "https://www.gymreapers.com/cdn/shop/articles/header-image-01_Cable-chest-workout---maximizing-your-muscle-growth.jpg?v=1721671171&width=2048",
     name: "Chest Beginner",
     description: "7x4 Challenge",
     exercises: [
